@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import conn from "./db.js";
+import pageRoute from "./routes/pageRoute.js";
 
 dotenv.config();
 
@@ -8,7 +9,6 @@ dotenv.config();
 conn();
 
 const app = express();
-
 const port = process.env.PORT;
 
 // Static Files Middleware
@@ -17,13 +17,8 @@ app.use(express.static("public"));
 // Template Engine
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.get("/about", (req, res) => {
-  res.render("about");
-});
+// Routes
+app.use("/", pageRoute);
 
 app.listen(port, () => {
   console.log(`Application running on port: ${port}`);
