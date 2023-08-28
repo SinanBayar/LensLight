@@ -15,6 +15,7 @@ const port = process.env.PORT;
 
 // Static Files Middleware
 app.use(express.static("public"));
+app.use(express.json());
 
 // Template Engine
 app.set("view engine", "ejs");
