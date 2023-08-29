@@ -7,5 +7,6 @@ router
   .route("/")
   .post(photoController.createPhoto)
   .get(photoController.getAllPhotos); // Aynı endpointler için farklı methodlar birbiri ile bağlanabilir.
+router.route("/:id").get(photoController.getAPhoto);
 
 export default router;
