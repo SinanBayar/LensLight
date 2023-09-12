@@ -23,7 +23,6 @@
       </div>
       <div class="tz-gallery">
         <div class="row">
-
           <!-- <% for(let i = 0 ; i < photos.length ; i++) { %>
           <div class="col-lg-4 col-md-6 ma_bottom30">
             <div class="lightbox">
@@ -44,20 +43,24 @@
           <% for (photo of photos) { %>
           <div class="col-lg-4 col-md-6 ma_bottom30">
             <div class="lightbox">
-              <img src="images/g1.jpg" alt="Bridge" />
+              <img src="<%= photo.url %>" alt="<%= photo.name %>" />
               <div class="view_main">
                 <div class="pose">
                   <a class="read_more" href="/photos/<%= photo._id %>"
                     ><img src="images/ga.png" alt="#"
                   /></a>
-                  <h3 style="padding-top: 10px; padding-bottom: 10px;"><%= photo.name %></h3>
-                  <p style="padding-top: 10px;"><%= photo.description.substring(0, 80) + "..." %></p>
+                  <h3 style="padding-top: 10px; padding-bottom: 10px">
+                    <%= photo.name %>
+                  </h3>
+                  <p style="padding-top: 10px">
+                    <%= photo.description.substring(0, 80) + "..." %>
+                  </p>
                 </div>
               </div>
             </div>
           </div>
           <% } %>
-          
+
           <div class="col-md-12">
             <a class="plus_btn" href="gallery.html">+</a>
           </div>
