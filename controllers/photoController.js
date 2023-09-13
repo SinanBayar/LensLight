@@ -32,7 +32,11 @@ const createPhoto = async (req, res) => {
 
 const getAllPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find({});
+    const photos = res.locals.user
+      ? await Photo.find({
+          photographer: { $ne: res.locals.user._id },
+        }) // Kullanıcının kendi yüklediği fotoğraflar hariç tüm fotoğraflar
+      : await Photo.find({}); // Tüm fotoğraflar
     res.status(200).render("photos", {
       photos,
       link: "photos",

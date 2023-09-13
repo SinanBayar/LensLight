@@ -18,7 +18,7 @@
           <div class="titlepage text_align_left">
             <h2><%= photo.name %></h2>
             <p><%= photo.description %></p>
-            <a class="read_more" href="about.html"
+            <a class="read_more" href="/users/<%= photo.photographer._id %>"
               >Photographer: <%= photo.photographer.username %></a
             >
           </div>
