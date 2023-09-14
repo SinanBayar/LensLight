@@ -103,10 +103,14 @@ const getAllUsers = async (req, res) => {
 const getAnUser = async (req, res) => {
   try {
     const user = await User.findById({ _id: req.params.id });
+    const inFollowers = user.followers.some((follower) => {
+      return follower.equals(res.locals.user._id);
+    });
     const photos = await Photo.find({ photographer: user._id });
     res.status(200).render("user", {
       user,
       photos,
+      inFollowers,
       link: "user",
     });
   } catch (error) {
@@ -126,15 +130,12 @@ const followUser = async (req, res) => {
       { $push: { followers: res.locals.user._id } },
       { new: true }
     );
-    user = await User.findByIdAndDelete(
+    user = await User.findByIdAndUpdate(
       { _id: res.locals.user._id },
       { $push: { followings: req.params.id } },
       { new: true }
     );
-    res.status(200).json({
-      succeded: true,
-      user,
-    });
+    res.status(200).redirect(`/users/${req.params.id}`);
   } catch (error) {
     res.status(500).json({
       succeded: false,
@@ -152,15 +153,12 @@ const unfollowUser = async (req, res) => {
       { $pull: { followers: res.locals.user._id } },
       { new: true }
     );
-    user = await User.findByIdAndDelete(
+    user = await User.findByIdAndUpdate(
       { _id: res.locals.user._id },
       { $pull: { followings: req.params.id } },
       { new: true }
     );
-    res.status(200).json({
-      succeded: true,
-      user,
-    });
+    res.status(200).redirect(`/users/${req.params.id}`);
   } catch (error) {
     res.status(500).json({
       succeded: false,

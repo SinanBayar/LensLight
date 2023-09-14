@@ -4,6 +4,7 @@ import conn from "./db.js";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
+import methodOverride from "method-override";
 
 import pageRoute from "./routes/pageRoute.js";
 import photoRoute from "./routes/photoRoute.js";
@@ -30,6 +31,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true }));
+app.use(
+  methodOverride("_method", {
+    methods: ["GET", "POST"],
+  })
+);
 
 // Template Engine
 app.set("view engine", "ejs");
