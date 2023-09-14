@@ -74,9 +74,14 @@ const getDashboardPage = async (req, res) => {
   const photos = await Photo.find({
     photographer: res.locals.user._id,
   });
+  const user = await User.findById({ _id: res.locals.user._id }).populate([
+    "followers",
+    "followings",
+  ]);
   res.render("dashboard", {
     link: "dashboard",
     photos,
+    user,
   });
 };
 
@@ -112,6 +117,58 @@ const getAnUser = async (req, res) => {
   }
 };
 
+const followUser = async (req, res) => {
+  try {
+    // res.locals.user._id : Giriş yapan kullanıcı
+    // req.params.id : Üzerinde işlem yapılacak kullanıcı
+    let user = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $push: { followers: res.locals.user._id } },
+      { new: true }
+    );
+    user = await User.findByIdAndDelete(
+      { _id: res.locals.user._id },
+      { $push: { followings: req.params.id } },
+      { new: true }
+    );
+    res.status(200).json({
+      succeded: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+
+const unfollowUser = async (req, res) => {
+  try {
+    // res.locals.user._id : Giriş yapan kullanıcı
+    // req.params.id : Üzerinde işlem yapılacak kullanıcı
+    let user = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $pull: { followers: res.locals.user._id } },
+      { new: true }
+    );
+    user = await User.findByIdAndDelete(
+      { _id: res.locals.user._id },
+      { $pull: { followings: req.params.id } },
+      { new: true }
+    );
+    res.status(200).json({
+      succeded: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succeded: false,
+      error,
+    });
+  }
+};
+
 export {
   createUser,
   loginUser,
@@ -119,4 +176,6 @@ export {
   getDashboardPage,
   getAllUsers,
   getAnUser,
+  followUser,
+  unfollowUser,
 };
