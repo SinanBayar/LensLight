@@ -10,9 +10,7 @@ const createPhoto = async (req, res) => {
       folder: "LensLight",
     }
   );
-
-  console.log("RESULT:::", result);
-
+  /* console.log("RESULT:::", result); */
   try {
     await Photo.create({
       name: req.body.name,
@@ -55,9 +53,16 @@ const getAPhoto = async (req, res) => {
     const photo = await Photo.findById({ _id: req.params.id }).populate(
       "photographer"
     );
+    let isOwner = false;
+    if (res.locals.user) {
+      // if(photo.photographer = res.locals.user._id) {isOwner = true}
+
+      isOwner = photo.photographer.equals(res.locals.user._id);
+    }
     res.status(200).render("photo", {
       photo,
       link: "photos",
+      isOwner,
     });
   } catch (error) {
     res.status(500).json({

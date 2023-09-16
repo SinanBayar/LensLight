@@ -43,10 +43,10 @@ const userSchema = new Schema(
 
 userSchema.pre("save", function (next) {
   const user = this;
-  console.log("Real user password: ", user.password);
+  /* console.log("Real user password: ", user.password); */
   bcrypt.hash(this.password, 10, (err, hash) => {
     this.password = hash;
-    console.log("Hashed user password: ", this.password);
+    /* console.log("Hashed user password: ", this.password); */
     next();
   });
 });

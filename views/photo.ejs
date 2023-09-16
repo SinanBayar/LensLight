@@ -21,6 +21,7 @@
             <a class="read_more" href="/users/<%= photo.photographer._id %>"
               >Photographer: <%= photo.photographer.username %></a
             >
+            <% if(isOwner) { %>
             <div style="margin-top: 30px">
               <ul style="display: flex; justify-content: space-between">
                 <li>
@@ -45,6 +46,7 @@
                 </li>
               </ul>
             </div>
+            <% } %>
           </div>
         </div>
         <div class="col-md-6">
@@ -91,7 +93,7 @@
                 <h2
                   style="font-size: 30px; margin-bottom: 20px; color: #d43a8e"
                 >
-                  Add New Photo
+                  Update Photo
                 </h2>
               </div>
             </div>

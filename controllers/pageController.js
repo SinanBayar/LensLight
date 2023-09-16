@@ -1,10 +1,16 @@
-import { Template } from "ejs";
 import nodemailer from "nodemailer";
+import Photo from "../models/photoModel.js";
+import User from "../models/userModel.js";
 
-const getIndexPage = (req, res) => {
-  console.log("REQUEST USER:::", req.user);
+const getIndexPage = async (req, res) => {
+  const photos = await Photo.find({}).sort({ uploadedAt: -1 }).limit(3);
+  const numOfUsers = await User.find({}).countDocuments();
+  const numOfPhotos = await Photo.find({}).countDocuments();
   res.render("index", {
     link: "index",
+    photos,
+    numOfUsers,
+    numOfPhotos,
   });
 };
 
